@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Test</title>
+</head>
+<body>
+     <h1>Testing htmx</h1>
+     <button hx-post="/clicked"
+    hx-trigger="click"
+    hx-target="#parent-div"
+    hx-swap="outerHTML"
+     >
+     Click Me!
+     </button>
+     <div id="parent-div">
+          asdfas
+     </div>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<button hx-get="/confirmed"
+        _="on htmx:confirm(issueRequest)
+             halt the event
+             call Swal.fire({title: 'Confirm', text:'Do you want to continue?'})
+             if result.isConfirmed issueRequest()">
+  Click Me
+</button>
+<button 
+	hx-get="/modal" 
+	hx-target="#modals-here" 
+	hx-trigger="click"
+    data-bs-toggle="modal"
+    data-bs-target="#modals-here"
+	class="btn btn-primary">Open Modal</button>
+
+<div id="modals-here"
+    class="modal modal-blur fade"
+    style="display: none"
+    aria-hidden="false"
+    tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<div class="modal-dialog modal-dialog-centered">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Modal title</h5>
+    </div>
+    <div class="modal-body">
+      <p>Modal body text goes here.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+     <script>
+          document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+     </script>
+     <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+</body>
+</html>
